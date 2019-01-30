@@ -10,10 +10,17 @@ class App extends Component {
   }
   render() {
     const { location } = this.props;
-    console.log('location is', location)
     return (
       <div className='container'>
-        Hello World  
+        {location ? (
+          <div>
+            {`Your position is latitude: ${location.latitude}, longitude: ${location.longitude}`}
+          </div>
+        ) : (
+          <div>
+            {'Still loading.'}
+          </div>
+        )}
       </div>
     )
   }
