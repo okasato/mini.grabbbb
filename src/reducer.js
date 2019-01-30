@@ -2,7 +2,7 @@ const defaultState = {
   geolocationRequest: false,
   geolocationSuccess: false,
   geolocationError: false,
-  location: []
+  location: {}
 };
 
 export default (state = defaultState, action) => {

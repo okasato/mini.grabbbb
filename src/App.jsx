@@ -1,26 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import actions from './action';
+import { getGeolocationRequest } from './action';
 
 class App extends Component {
-
+  constructor(props) {
+    super(props)
+    const { getGeolocationRequest } = this.props;
+    getGeolocationRequest();
+  }
   render() {
-    // const {} = this.props;
-
+    const { location } = this.props;
+    console.log('location is', location)
     return (
       <div className='container'>
-        Hello
+        Hello World  
       </div>
     )
   }
 }
 
-const mapStateToProps = ({}) => {
-  return {}
+const mapStateToProps = ({
+  location,
+}) => {
+  return {
+    location,
+  }
 }
 
 const mapDispatchToProps = dispatch => {
-  return {}
+  return {
+    getGeolocationRequest: () => dispatch(getGeolocationRequest()),
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
