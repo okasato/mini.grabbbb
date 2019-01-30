@@ -1,5 +1,4 @@
 import { call, put, takeEvery, all, } from 'redux-saga/effects';
-import { getGeolocationSuccess } from './action';
 import { getMyLocation } from './utils';
 
 function* getGeolocationRequest(action) {

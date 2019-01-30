@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getGeolocationRequest } from './action';
-
+import Map from './Map';
 class App extends Component {
   constructor(props) {
     super(props)
@@ -15,6 +15,7 @@ class App extends Component {
         {location ? (
           <div>
             {`Your position is latitude: ${location.latitude}, longitude: ${location.longitude}`}
+            <Map location={location} />
           </div>
         ) : (
           <div>
