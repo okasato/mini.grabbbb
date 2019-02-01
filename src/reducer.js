@@ -2,7 +2,8 @@ const defaultState = {
   geolocationRequest: false,
   geolocationSuccess: false,
   geolocationError: false,
-  location: {}
+  location: {},
+  results: [],
 };
 
 export default (state = defaultState, action) => {
@@ -27,6 +28,13 @@ export default (state = defaultState, action) => {
         ...state,
         geolocationError: true,
       };
+    }
+
+    case 'GET_NEAR_BY_SEARCH': {
+      return {
+        ...state,
+        results: action.results,
+      }
     }
 
     default:

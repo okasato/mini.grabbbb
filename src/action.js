@@ -17,4 +17,12 @@ export const getGeolocationError = () => {
   }
 }
 
+export const getNearBySearch = (results) => {
+  console.log(results)
+  return {
+    type: 'GET_NEAR_BY_SEARCH',
+    results
+  }
+}
+
 
