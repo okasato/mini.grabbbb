@@ -1,72 +1,86 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import { getNearBySearch } from './action';
+import { searchNearBy } from './utils';
 
+class InnerMap extends Component {
+  state = {
+    isOpen: false,
+    activeMarkerIndex: null,
+  }
 
-const InnerMap = withGoogleMap(props => {
-  console.log(props)
-  return (
-    <GoogleMap
-      defaultZoom={12}
-      defaultCenter={{ lat: 49.2331455, lng: -123.1188404 }}
-      center={props.center}
-    >
-      {props.results.map(result => {
-        let position = {
-          lat: result.geometry.location.lat(),
-          lng: result.geometry.location.lng()
-        };
-        return <Marker
-          position={position}
-        />
-      })}
-    </GoogleMap>
-  )
-}
-);
+  onOpenInfoWindow = index => {
+    const { isOpen } = this.state;
+    this.setState({
+      isOpen: !isOpen,
+      activeMarkerIndex: index,
+    })
+  }
 
-class Map extends Component {
+  onToggleOpen = () => {
+    console.log('hey isToggleOpen')
+    const { isOpen } = this.state;
+    this.setState({
+      isOpen: !isOpen,
+    });
+  } 
+
   render() {
-    const {
-      location,
-      getNearBySearch,
-      results,
-    } = this.props;
-
-    let map = document.getElementsByClassName('map');
-    const center = {
-      lat: location.latitude,
-      lng: location.longitude,
-    };
-    const target = new google.maps.Map(map, {
-      center,
-      zoom: 15,
-    });
-    const places = new google.maps.places.PlacesService(target);
-    let keyword = 'coffee';
-    places.nearbySearch({
-      location: target.center,
-      radius: '500',
-      name: keyword,
-    }, (results, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        console.log(results)
-        getNearBySearch(results);
-      } else {
-        console.log(status)
-      }
-    });
-
+    const { isOpen, activeMarkerIndex } = this.state;
+    const { center, results } = this.props;
     return (
-      <InnerMap
-        containerElement={(<div />)}
-        mapElement={(<div className='map' style={{ marginTop: 10, height: 400, width: 350 }} />)}
+      <GoogleMap
+        defaultZoom={14}
+        defaultCenter={{ lat: 49.2331455, lng: -123.1188404 }}
         center={center}
-        results={results}
-      />
+      >
+        <Marker
+          animation={google.maps.Animation.BOUNCE}
+          position={center}
+        />
+        {results.map((result, index) => {
+          let position = {
+            lat: result.geometry.location.lat(),
+            lng: result.geometry.location.lng()
+          };
+          return (
+            <Marker
+              key={index}
+              animation={google.maps.Animation.DROP}
+              position={position}
+              onClick={() => this.onOpenInfoWindow(index)}
+            >
+              {isOpen && (activeMarkerIndex === index) && (<InfoWindow onCloseClick={this.onToggleOpen}>
+                <div>{`CAFE NAME: ${result.name}`}</div>
+              </InfoWindow>)}
+            </Marker>
+          )
+        })}
+      </GoogleMap>
     )
   }
+}
+
+const InnerMapWithGoogleMap = withGoogleMap(props => (
+  <InnerMap {...props}/>
+))
+
+const Map = ({
+  location,
+  getNearBySearch,
+  results
+}) => {
+  let map = document.getElementsByClassName('map');
+  searchNearBy(map, location, 'coffee', getNearBySearch);
+  return (
+    <InnerMapWithGoogleMap
+      containerElement={(<div />)}
+      mapElement={(<div className='map' style={{ marginTop: 10, height: 400, width: 350 }} />)}
+      center={location}
+      results={results}
+    />
+  )
 }
 
 const mapStateToProps = ({

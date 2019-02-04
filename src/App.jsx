@@ -14,7 +14,7 @@ class App extends Component {
       <div className='container'>
         {location ? (
           <div>
-            {`Your position is latitude: ${location.latitude}, longitude: ${location.longitude}`}
+            {`Your position is latitude: ${location.lat}, longitude: ${location.lng}`}
             <Map location={location} />
           </div>
         ) : (
