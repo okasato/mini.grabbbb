@@ -36,8 +36,10 @@
     "@babel/preset-stage-2": "^7.0.0",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
+    "svg-loader": "0.0.2",
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"

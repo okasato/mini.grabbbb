@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import { getNearBySearch } from './action';
 import { searchNearBy } from './utils';
-
+import CoffeeMarker from './pin-coffee-mob.svg';
 class InnerMap extends Component {
   state = {
     isOpen: false,
@@ -50,12 +50,13 @@ class InnerMap extends Component {
               animation={google.maps.Animation.DROP}
               position={position}
               onClick={() => this.onOpenInfoWindow(index)}
+              icon={CoffeeMarker}
             >
               {isOpen && (activeMarkerIndex === index) && (<InfoWindow onCloseClick={this.onToggleOpen}>
                 <ul>
                   <li>{`NAME: ${result.name}`}</li>
                   <li>{`OPEN/CLOSE: ${result.opening_hours ? (result.opening_hours.open_now ? 'OPEN' : 'CLOSED') : 'NO INFOMATION'}`}</li>
-                  <li><a href={link}></a></li>
+                  <li><a href={link}>{link}</a></li>
                 </ul>
               </InfoWindow>)}
             </Marker>
