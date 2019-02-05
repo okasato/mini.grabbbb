@@ -19,7 +19,6 @@ class InnerMap extends Component {
   }
 
   onToggleOpen = () => {
-    console.log('hey isToggleOpen')
     const { isOpen } = this.state;
     this.setState({
       isOpen: !isOpen,
@@ -44,6 +43,7 @@ class InnerMap extends Component {
             lat: result.geometry.location.lat(),
             lng: result.geometry.location.lng()
           };
+          let link = `https://www.google.com/maps/search/?api=1&query=${result.name}&query_place_id=${result.place_id}`;
           return (
             <Marker
               key={index}
@@ -52,7 +52,11 @@ class InnerMap extends Component {
               onClick={() => this.onOpenInfoWindow(index)}
             >
               {isOpen && (activeMarkerIndex === index) && (<InfoWindow onCloseClick={this.onToggleOpen}>
-                <div>{`CAFE NAME: ${result.name}`}</div>
+                <ul>
+                  <li>{`NAME: ${result.name}`}</li>
+                  <li>{`OPEN/CLOSE: ${result.opening_hours ? (result.opening_hours.open_now ? 'OPEN' : 'CLOSED') : 'NO INFOMATION'}`}</li>
+                  <li><a href={link}></a></li>
+                </ul>
               </InfoWindow>)}
             </Marker>
           )
